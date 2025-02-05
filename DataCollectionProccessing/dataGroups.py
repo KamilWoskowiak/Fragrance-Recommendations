@@ -31,7 +31,7 @@ def processCsv(inputFile, outputFile, api):
 
         next(reader)
 
-        outputHeaders = extractData(None).keys()
+        outputHeaders = ['name', 'brand', 'accords', 'ratingValue', 'ratingCount', 'seasons', 'timeOfDay', 'gender', 'priceValue', 'notesBreakdown']
         writer.writerow(outputHeaders)
         print(outputHeaders)
 
@@ -49,7 +49,7 @@ def processCsv(inputFile, outputFile, api):
 
             print(f"Completed row {i+1} : {(i+1)/numRows*100}%")
             print("Sleeping...")
-            time.sleep(10)
+            time.sleep(2)
             print("Awake...")
 
 apikey = os.getenv("proxy_api")

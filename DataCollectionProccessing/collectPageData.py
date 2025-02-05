@@ -118,7 +118,6 @@ def extractData(html):
         "ratingCount": rating_count,
         "seasons": seasons,
         "timeOfDay": timeOfDay,
-        "seasonsAndTimesOfDay": seasonsAndTimesOfDay,
         "gender": gender,
         "priceValue": priceValue,
         "notesBreakdown": notesBreakdown
