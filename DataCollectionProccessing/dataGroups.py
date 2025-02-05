@@ -1,4 +1,9 @@
 import csv
+from dotenv import load_dotenv
+import os
+import requests
+
+load_dotenv()
 
 csv_filename = "fragrance_list_brands.csv"
 
@@ -15,3 +20,10 @@ with open(csv_filename, 'r', encoding="utf-8") as csvfile:
 print(collections)
 for x in collections.keys():
     print(f"{x}: {len(collections[x])}")
+
+
+# proxies = {
+#   "https": os.getenv("PROXY_URL")
+# }
+# r = requests.get('https://www.fragrantica.com/perfume/Lattafa-Perfumes/Khamrah-75805.html', proxies=proxies, verify=False)
+#
