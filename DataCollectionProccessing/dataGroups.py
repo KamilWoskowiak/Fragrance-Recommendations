@@ -11,15 +11,17 @@ load_dotenv()
 
 csv_filename = "fragrance_list_brands.csv"
 
-def fetch(link, proxies):
-    return requests.get(link, proxies=proxies, verify=False)
+def fetch(link, api):
+    payload = {'api_key': api, 'url': link}
+    r = requests.get('https://api.scraperapi.com', params=payload)
+    return r.text
 
 def countRows(filename):
     with open(filename, 'r', encoding='utf-8') as f:
         return sum(1 for _ in enumerate(f))
 
 
-def processCsv(inputFile, outputFile, proxies):
+def processCsv(inputFile, outputFile, api):
 
     numRows = countRows(inputFile)-1
 
@@ -36,21 +38,19 @@ def processCsv(inputFile, outputFile, proxies):
         for i, row in enumerate(reader):
             link = row[2]
             try:
-                html = fetch(link, proxies)
+                html = fetch(link, api)
                 extractedData = extractData(html)
                 writer.writerow([extractedData.get(key, "") for key in outputHeaders])
-            except:
+            except Exception as e:
+                print(e)
                 print(f"ERROR AT INDEX {i} NAMED {str(row[0:2])}")
                 input("Continue?")
                 writer.writerow([row[0], row[1]])
 
-            print(f"Completed row {i} : {i/numRows*100}%")
+            print(f"Completed row {i+1} : {(i+1)/numRows*100}%")
             print("Sleeping...")
-            time.sleep(2)
+            time.sleep(10)
             print("Awake...")
 
-proxies = {
-    "https": os.getenv("PROXY_URL")
-}
-
-processCsv(csv_filename, "raw_data.csv", proxies)
+apikey = os.getenv("proxy_api")
+processCsv(csv_filename, "raw_data.csv", apikey)

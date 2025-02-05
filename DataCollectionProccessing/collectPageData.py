@@ -4,8 +4,7 @@ from bs4 import BeautifulSoup
 
 def extractData(html):
 
-    if html is not None:
-        soup = BeautifulSoup(html, "html.parser")
+    soup = BeautifulSoup(html, "html.parser")
 
     try:
         description = soup.find("div", itemprop="description").find("p").find_all('b')[0:2]
