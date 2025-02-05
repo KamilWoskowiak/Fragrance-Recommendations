@@ -3,8 +3,9 @@ from bs4 import BeautifulSoup
 
 
 def extractData(html):
-    soup = BeautifulSoup(html, "html.parser")
-    accord_bars = soup.find_all(class_="accord-bar")
+
+    if html is not None:
+        soup = BeautifulSoup(html, "html.parser")
 
     try:
         description = soup.find("div", itemprop="description").find("p").find_all('b')[0:2]
@@ -15,6 +16,7 @@ def extractData(html):
         brand = f"ERROR - {e}"
 
     try:
+        accord_bars = soup.find_all(class_="accord-bar")
         accords = {}
         for bar in accord_bars:
             text = bar.get_text(strip=True)
@@ -109,7 +111,7 @@ def extractData(html):
     except Exception as e:
         notesBreakdown = f"ERROR - {e}"
 
-    return {
+    output = {
         "name": name,
         "brand": brand,
         "accords": accords,
@@ -122,8 +124,5 @@ def extractData(html):
         "priceValue": priceValue,
         "notesBreakdown": notesBreakdown
     }
-
-# Example usage
-if __name__ == "__main__":
-    url = "https://www.fragrantica.com/perfume/Louis-Vuitton/Symphony-68357.html"
-    extracted_html = extractData(url)
+    print(output)
+    return output
