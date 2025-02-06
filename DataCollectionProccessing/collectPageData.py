@@ -124,3 +124,8 @@ def extractData(html):
     }
     print(output)
     return output
+
+
+if __name__ == "__main__":
+    with open("test.html", "r", encoding="utf-8") as f:
+        print(extractData(f.read()))

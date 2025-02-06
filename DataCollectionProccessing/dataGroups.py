@@ -12,7 +12,7 @@ load_dotenv()
 csv_filename = "fragrance_list_brands.csv"
 
 def fetch(link, api):
-    payload = {'api_key': api, 'url': link}
+    payload = {'api_key': api, 'url': link, 'render':'true'}
     r = requests.get('https://api.scraperapi.com', params=payload)
     return r.text
 
@@ -39,6 +39,8 @@ def processCsv(inputFile, outputFile, api):
             link = row[2]
             try:
                 html = fetch(link, api)
+                # with open("test.html", "w", encoding="utf-8") as f:
+                #     f.write(html)
                 extractedData = extractData(html)
                 writer.writerow([extractedData.get(key, "") for key in outputHeaders])
             except Exception as e:
@@ -49,7 +51,7 @@ def processCsv(inputFile, outputFile, api):
 
             print(f"Completed row {i+1} : {(i+1)/numRows*100}%")
             print("Sleeping...")
-            time.sleep(2)
+            time.sleep(4)
             print("Awake...")
 
 apikey = os.getenv("proxy_api")
