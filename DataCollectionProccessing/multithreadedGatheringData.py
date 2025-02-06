@@ -257,6 +257,6 @@ def processCsv(inputFile, outputFile, api):
 
 
 if __name__ == "__main__":
-    csv_filename = "fragrance_list_brands.csv"
-    output_filename = "raw_data.csv"
+    csv_filename = "extra_fragrance_list_brands.csv"
+    output_filename = "extra_raw_data.csv"
     processCsv(csv_filename, output_filename, apikey)

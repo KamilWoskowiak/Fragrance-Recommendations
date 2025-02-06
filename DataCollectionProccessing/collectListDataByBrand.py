@@ -47,7 +47,7 @@ for item in fragrance_items:
     if name and link:
         fragrance_data.append([name, brand, link])
 
-csv_filename = "fragrance_list_brands.csv"
+csv_filename = "extra_fragrance_list_brands.csv"
 file_exists = os.path.isfile(csv_filename)
 
 with open(csv_filename, mode="a", newline="", encoding="utf-8") as file:
