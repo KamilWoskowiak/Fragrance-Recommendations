@@ -57,7 +57,6 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({ setResults }) => {
 
     if (recommendationType === "accords") {
       const selectedAccordValues = Object.values(selectedAccords)
-      console.log(selectedAccords)
       if (selectedAccordValues.length === 0 || selectedAccordValues.every((value) => value === 0)) {
         setError("Please select at least one accord with a value greater than zero.")
         return
