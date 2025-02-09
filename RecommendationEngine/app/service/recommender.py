@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from app.config import NUMERIC_FEATURE_COLS, ACCORD_COLS, DATA_FILE
-from app.model.schemas import TimePreference, SeasonPreference
+from app.model.schemas import TimePreference, SeasonPreference, RecommendationResponse
 
 
 class FragranceRecommender:
@@ -80,14 +80,7 @@ class FragranceRecommender:
         else:
             return "Excellent Value"
 
-    def get_recommendations(
-            self,
-            user_vector,
-            time_pref,
-            season_pref,
-            top_k=5,
-            diversity_factor=0.0
-    ):
+    def get_recommendations(self, user_vector, time_pref, season_pref, top_k=5, diversity_factor=0.0):
         X = self.df[NUMERIC_FEATURE_COLS].values
         user_vector_2d = user_vector.reshape(1, -1)
         base_similarities = cosine_similarity(user_vector_2d, X)[0]
@@ -110,16 +103,36 @@ class FragranceRecommender:
                 0.15 * temp_df['season_match']
         )
 
-        return temp_df.sort_values(by='final_score', ascending=False).head(top_k).copy()
+        recommendations = temp_df.sort_values(by='final_score', ascending=False).head(top_k)
+
+        results = []
+        for _, row in recommendations.iterrows():
+            results.append(
+                RecommendationResponse(
+                    name=row['name'],
+                    brand=row['brand'],
+                    rating_value=row['ratingValue'],
+                    rating_count=row['ratingCount'],
+                    gender_label=self.get_gender_label(row['gender_score']),
+                    price_value_label=self.format_price_value(row['priceValue_score']),
+                    match_score=float(row['final_score']),
+                    dominant_accords=self.get_dominant_accords(row),
+                    notes_breakdown=row.get('notes_breakdown')
+                )
+            )
+        return results
 
     def get_recommendations_by_accords(
             self,
-            accord_preferences,
-            time_pref,
-            season_pref,
-            top_k=5,
-            diversity_factor=0.0
+            accord_preferences: dict[str, float],
+            time_pref: TimePreference,
+            season_pref: SeasonPreference,
+            top_k: int = 5,
+            diversity_factor: float = 0.0
     ):
+        invalid_accords = set(accord_preferences.keys()) - set(ACCORD_COLS)
+        if invalid_accords:
+            raise ValueError(f"Invalid accord names: {invalid_accords}")
 
         user_vector = np.zeros(len(NUMERIC_FEATURE_COLS))
 
@@ -132,9 +145,9 @@ class FragranceRecommender:
         for i, feature in enumerate(NUMERIC_FEATURE_COLS):
             if feature not in accord_preferences:
                 if feature in ['gender_score', 'timeOfDay_score', 'season_score']:
-                    user_vector[i] = 0  # neutral value
+                    user_vector[i] = 0
                 elif feature == 'priceValue_score':
-                    user_vector[i] = 0.5  # neutral value
+                    user_vector[i] = 0.5
 
         return self.get_recommendations(
             user_vector=user_vector,

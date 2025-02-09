@@ -43,25 +43,13 @@ async def recommend_fragrances(request: RecommendationRequest):
             request.diversity_factor
         )
 
-        response = []
-        for _, row in recommendations.iterrows():
-            response.append(RecommendationResponse(
-                name=row['name'],
-                brand=row['brand'],
-                rating_value=row['ratingValue'],
-                rating_count=row['ratingCount'],
-                gender_label=recommender.get_gender_label(row['gender_score']),
-                price_value_label=recommender.format_price_value(row['priceValue_score']),
-                match_score=row['final_score'],
-                dominant_accords=recommender.get_dominant_accords(row)[:3],
-                notes_breakdown=row['notesBreakdown']
-            ))
-
-        return response
+        return recommendations
 
     except Exception as e:
-        print(str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while processing your request: {str(e)}"
+        )
 
 @router.post("/recommend-by-accords", response_model=List[RecommendationResponse])
 async def recommend_fragrances_by_accords(request: AccordBasedRecommendationRequest):

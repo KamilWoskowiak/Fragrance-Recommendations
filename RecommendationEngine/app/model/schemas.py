@@ -20,7 +20,7 @@ class RecommendationRequest(BaseModel):
     top_k: int = Field(default=5, ge=1, le=20)
 
 class AccordBasedRecommendationRequest(BaseModel):
-    accord_preferences: dict[str, float] = Field(..., min_items=1, max_items=10)
+    accord_preferences: dict[str, float] = Field(..., min_items=1)
     time_pref: TimePreference = Field(default=TimePreference.both)
     season_pref: SeasonPreference = Field(default=SeasonPreference.both)
     diversity_factor: float = Field(default=0.0, ge=0.0, le=1.0)
