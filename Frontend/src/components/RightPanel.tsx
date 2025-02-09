@@ -23,8 +23,9 @@ interface RightPanelProps {
 
 export const RightPanel: React.FC<RightPanelProps> = ({ results }) => {
   return (
-    <div className="w-full md:w-1/3 bg-secondary/80 border-l border-border flex flex-col h-full">
-      <div className="p-6 flex-grow overflow-hidden flex flex-col">
+    <div className="w-1/3 min-h-screen bg-secondary/80 border-l border-border flex flex-col">
+      {/* You can remove `overflow-hidden` if you want content to flow outside */}
+      <div className="p-6 flex-grow flex flex-col">
         <h2 className="text-2xl font-bold mb-6">Recommendations</h2>
         {results ? (
           <ScrollArea className="flex-grow">
@@ -35,21 +36,27 @@ export const RightPanel: React.FC<RightPanelProps> = ({ results }) => {
                   <p className="text-muted-foreground">by {fragrance.brand}</p>
                   <div className="mt-2">
                     <p>
-                      Rating: {fragrance.rating_value?.toFixed(1) ?? "N/A"} ({fragrance.rating_count} reviews)
+                      Rating: {fragrance.rating_value?.toFixed(1) ?? "N/A"} (
+                      {fragrance.rating_count} reviews)
                     </p>
                     <p>Gender: {fragrance.gender_label}</p>
                     <p>Price: {fragrance.price_value_label}</p>
-                    <p>Match Score: {fragrance.match_score ? (fragrance.match_score * 100).toFixed(2) + "%" : "N/A"}</p>
+                    <p>
+                      Match Score:{" "}
+                      {fragrance.match_score
+                        ? (fragrance.match_score * 100).toFixed(2) + "%"
+                        : "N/A"}
+                    </p>
                   </div>
                   <div className="mt-2">
                     <h4 className="font-semibold">Dominant Accords:</h4>
                     <ul className="list-disc list-inside">
-                      {fragrance.dominant_accords &&
-                        fragrance.dominant_accords.map(([accord, value], i) => (
-                          <li key={i}>
-                            {accord}: {value ? (value * 100).toFixed(2) + "%" : "N/A"}
-                          </li>
-                        ))}
+                      {fragrance.dominant_accords?.map(([accord, value], i) => (
+                        <li key={i}>
+                          {accord}:{" "}
+                          {value ? (value * 100).toFixed(2) + "%" : "N/A"}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                   {fragrance.notes_breakdown && (
@@ -64,14 +71,14 @@ export const RightPanel: React.FC<RightPanelProps> = ({ results }) => {
                                 {key === "topnotes"
                                   ? "Top Notes:"
                                   : key === "midnotes"
-                                    ? "Mid Notes:"
-                                    : key === "bottomnotes"
-                                      ? "Base Notes:"
-                                      : "Notes:"}
+                                  ? "Mid Notes:"
+                                  : key === "bottomnotes"
+                                  ? "Base Notes:"
+                                  : "Notes:"}
                               </p>
                               <p>{notes.join(", ")}</p>
                             </div>
-                          ),
+                          )
                       )}
                     </div>
                   )}
@@ -82,7 +89,8 @@ export const RightPanel: React.FC<RightPanelProps> = ({ results }) => {
         ) : (
           <div className="flex-grow flex items-center justify-center">
             <p className="text-center text-muted-foreground">
-              No recommendations yet. Please submit the form to get recommendations.
+              No recommendations yet. Please submit the form to get
+              recommendations.
             </p>
           </div>
         )}
@@ -90,4 +98,3 @@ export const RightPanel: React.FC<RightPanelProps> = ({ results }) => {
     </div>
   )
 }
-

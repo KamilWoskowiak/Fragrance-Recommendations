@@ -13,14 +13,14 @@ const App: React.FC = () => {
         <div className="w-px bg-gradient-to-b from-transparent via-border to-transparent" />
         <RightPanel results={results} />
       </main>
-      <footer className="py-4 text-center bg-background">
+      <footer className="py-4 text-center bg-transparent">
         <a
           href="https://github.com/kamilwoskowiak"
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary hover:underline"
         >
-          Made by Kamil Woskowiak
+        Made by Kamil Woskowiak
         </a>
       </footer>
     </div>

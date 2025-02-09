@@ -119,7 +119,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({ setResults }) => {
 
   return (
     <div className="w-full md:w-2/3 p-6 overflow-y-auto">
-      <h1 className="text-2xl font-bold mb-6">Fragrance Recommender</h1>
+      <h1 className="text-3xl font-bold mb-6">Fragrance Recommender</h1>
       <RecommendationTypeSelector
         recommendationType={recommendationType}
         setRecommendationType={setRecommendationType}
