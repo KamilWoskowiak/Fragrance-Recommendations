@@ -18,6 +18,10 @@ async def root():
 async def list_fragrances():
     return {"fragrances": sorted(list(recommender.valid_names_brands))}
 
+@router.get("/accords")
+async def list_fragrances_accord():
+    return {"accords": sorted(ACCORD_COLS)}
+
 
 @router.post("/recommend-by-fragrances", response_model=List[RecommendationResponse])
 async def recommend_fragrances(request: RecommendationRequest):
