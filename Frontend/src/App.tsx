@@ -20,7 +20,7 @@ const App: React.FC = () => {
           rel="noopener noreferrer"
           className="text-primary hover:underline"
         >
-          Made by Kamil Woskowiak | GitHub
+          Made by Kamil Woskowiak
         </a>
       </footer>
     </div>
