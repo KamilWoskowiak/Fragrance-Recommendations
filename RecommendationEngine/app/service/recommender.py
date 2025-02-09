@@ -80,7 +80,14 @@ class FragranceRecommender:
         else:
             return "Excellent Value"
 
-    def get_recommendations(self, user_vector, time_pref, season_pref, top_k=5, diversity_factor=0.0):
+    def get_recommendations(
+            self,
+            user_vector,
+            time_pref,
+            season_pref,
+            top_k=5,
+            diversity_factor=0.0
+    ):
         X = self.df[NUMERIC_FEATURE_COLS].values
         user_vector_2d = user_vector.reshape(1, -1)
         base_similarities = cosine_similarity(user_vector_2d, X)[0]
@@ -104,3 +111,35 @@ class FragranceRecommender:
         )
 
         return temp_df.sort_values(by='final_score', ascending=False).head(top_k).copy()
+
+    def get_recommendations_by_accords(
+            self,
+            accord_preferences,
+            time_pref,
+            season_pref,
+            top_k=5,
+            diversity_factor=0.0
+    ):
+
+        user_vector = np.zeros(len(NUMERIC_FEATURE_COLS))
+
+        for accord, weight in accord_preferences.items():
+            if not 0 <= weight <= 1:
+                raise ValueError(f"Weight for {accord} must be between 0 and 1")
+            idx = NUMERIC_FEATURE_COLS.index(accord)
+            user_vector[idx] = weight
+
+        for i, feature in enumerate(NUMERIC_FEATURE_COLS):
+            if feature not in accord_preferences:
+                if feature in ['gender_score', 'timeOfDay_score', 'season_score']:
+                    user_vector[i] = 0  # neutral value
+                elif feature == 'priceValue_score':
+                    user_vector[i] = 0.5  # neutral value
+
+        return self.get_recommendations(
+            user_vector=user_vector,
+            time_pref=time_pref,
+            season_pref=season_pref,
+            top_k=top_k,
+            diversity_factor=diversity_factor
+        )

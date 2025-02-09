@@ -19,6 +19,13 @@ class RecommendationRequest(BaseModel):
     diversity_factor: float = Field(default=0.0, ge=0.0, le=1.0)
     top_k: int = Field(default=5, ge=1, le=20)
 
+class AccordBasedRecommendationRequest(BaseModel):
+    accord_preferences: dict[str, float] = Field(..., min_items=1, max_items=10)
+    time_pref: TimePreference = Field(default=TimePreference.both)
+    season_pref: SeasonPreference = Field(default=SeasonPreference.both)
+    diversity_factor: float = Field(default=0.0, ge=0.0, le=1.0)
+    top_k: int = Field(default=5, ge=1, le=20)
+
 class RecommendationResponse(BaseModel):
     name: str
     brand: str

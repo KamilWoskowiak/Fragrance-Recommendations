@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from typing import List
-from app.model.schemas import RecommendationRequest, RecommendationResponse
+
+from app.config import ACCORD_COLS
+from app.model.schemas import RecommendationRequest, RecommendationResponse, AccordBasedRecommendationRequest
 from app.service.recommender import FragranceRecommender
 
 router = APIRouter()
@@ -17,7 +19,7 @@ async def list_fragrances():
     return {"fragrances": sorted(list(recommender.valid_names_brands))}
 
 
-@router.post("/recommend", response_model=List[RecommendationResponse])
+@router.post("/recommend-by-fragrances", response_model=List[RecommendationResponse])
 async def recommend_fragrances(request: RecommendationRequest):
     try:
         invalid_names = [name for name in request.liked_fragrances
@@ -56,3 +58,39 @@ async def recommend_fragrances(request: RecommendationRequest):
     except Exception as e:
         print(str(e))
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/recommend-by-accords", response_model=List[RecommendationResponse])
+async def recommend_fragrances_by_accords(request: AccordBasedRecommendationRequest):
+    try:
+        invalid_accords = set(request.accord_preferences.keys()) - set(ACCORD_COLS)
+        if invalid_accords:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid accord names: {', '.join(invalid_accords)}"
+            )
+
+        invalid_weights = [
+            accord for accord, weight in request.accord_preferences.items()
+            if not 0 <= weight <= 1
+        ]
+        if invalid_weights:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid weights for accords: {', '.join(invalid_weights)}. Weights must be between 0 and 1."
+            )
+
+        recommendations = recommender.get_recommendations_by_accords(
+            accord_preferences=request.accord_preferences,
+            time_pref=request.time_pref,
+            season_pref=request.season_pref,
+            top_k=request.top_k,
+            diversity_factor=request.diversity_factor
+        )
+
+        return recommendations
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while processing your request: {str(e)}"
+        )
