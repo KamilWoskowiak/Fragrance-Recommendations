@@ -24,7 +24,6 @@ interface RightPanelProps {
 export const RightPanel: React.FC<RightPanelProps> = ({ results }) => {
   return (
     <div className="w-1/3 min-h-screen bg-secondary/80 border-l border-border flex flex-col">
-      {/* You can remove `overflow-hidden` if you want content to flow outside */}
       <div className="p-6 flex-grow flex flex-col">
         <h2 className="text-2xl font-bold mb-6">Recommendations</h2>
         {results ? (
