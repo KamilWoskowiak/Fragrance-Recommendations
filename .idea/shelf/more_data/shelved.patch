@@ -1,0 +1,12 @@
+Index: DataCollectionProccessing/.env
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/DataCollectionProccessing/.env b/DataCollectionProccessing/.env
+new file mode 100644
+--- /dev/null	(date 1738777449970)
++++ b/DataCollectionProccessing/.env	(date 1738777449970)
+@@ -0,0 +1,1 @@
++PROXY_URL = scraperapi:547cd0e5f2743b77731fe1d9d6e7f391@proxy-server.scraperapi.com:8001
+\ No newline at end of file
