@@ -117,7 +117,7 @@ class FragranceRecommender:
                     price_value_label=self.format_price_value(row['priceValue_score']),
                     match_score=float(row['final_score']),
                     dominant_accords=self.get_dominant_accords(row),
-                    notes_breakdown=row.get('notes_breakdown')
+                    notes_breakdown=row['notesBreakdown']  # Changed from notes_breakdown to notesBreakdown
                 )
             )
         return results
