@@ -28,4 +28,3 @@ export const WeatherSelector: React.FC<WeatherSelectorProps> = ({ weather, setWe
     </div>
   )
 }
-

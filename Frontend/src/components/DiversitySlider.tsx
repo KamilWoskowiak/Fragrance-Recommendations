@@ -27,4 +27,3 @@ export const DiversitySlider: React.FC<DiversitySliderProps> = ({ diversity, set
     </div>
   )
 }
-

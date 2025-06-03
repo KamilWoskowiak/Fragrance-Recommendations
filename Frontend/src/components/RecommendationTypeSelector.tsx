@@ -30,4 +30,3 @@ export const RecommendationTypeSelector: React.FC<RecommendationTypeSelectorProp
     </div>
   )
 }
-

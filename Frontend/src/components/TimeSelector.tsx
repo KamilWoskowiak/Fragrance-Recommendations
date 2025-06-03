@@ -28,4 +28,3 @@ export const TimeSelector: React.FC<TimeSelectorProps> = ({ time, setTime }) => 
     </div>
   )
 }
-

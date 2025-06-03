@@ -32,4 +32,3 @@ export const NumberOfRecommendationsInput: React.FC<NumberOfRecommendationsInput
     </div>
   )
 }
-

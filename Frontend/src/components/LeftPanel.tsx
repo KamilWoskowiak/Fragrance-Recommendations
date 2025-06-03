@@ -147,4 +147,3 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({ setResults }) => {
     </div>
   )
 }
-

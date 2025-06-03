@@ -36,4 +36,3 @@ export const AccordSelector: React.FC<AccordSelectorProps> = ({ accords, selecte
     </div>
   )
 }
-
