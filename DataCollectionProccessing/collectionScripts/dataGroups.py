@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import requests
 
-from DataCollectionProccessing.collectPageData import extractData
+from DataCollectionProccessing.collectionScripts.collectPageData import extractData
 
 load_dotenv()
 
