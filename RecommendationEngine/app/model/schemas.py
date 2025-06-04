@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator, Field
+from pydantic import BaseModel, validator, Field, model_validator
 from typing import List, Optional, Tuple
 from enum import Enum
 
@@ -13,14 +13,14 @@ class SeasonPreference(str, Enum):
     both = "both"
 
 class RecommendationRequest(BaseModel):
-    liked_fragrances: List[str] = Field(..., min_items=1, max_items=10)
+    liked_fragrances: List[str] = Field(..., min_length=1, max_length=10)
     time_pref: TimePreference = Field(default=TimePreference.both)
     season_pref: SeasonPreference = Field(default=SeasonPreference.both)
     diversity_factor: float = Field(default=0.0, ge=0.0, le=1.0)
     top_k: int = Field(default=5, ge=1, le=20)
 
 class AccordBasedRecommendationRequest(BaseModel):
-    accord_preferences: dict[str, float] = Field(..., min_items=1)
+    accord_preferences: dict[str, float] = Field(..., min_length=1)
     time_pref: TimePreference = Field(default=TimePreference.both)
     season_pref: SeasonPreference = Field(default=SeasonPreference.both)
     diversity_factor: float = Field(default=0.0, ge=0.0, le=1.0)
