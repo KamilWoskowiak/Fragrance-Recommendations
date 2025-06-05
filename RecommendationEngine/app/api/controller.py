@@ -7,6 +7,8 @@ from app.service.recommender import FragranceRecommender
 
 router = APIRouter()
 recommender = FragranceRecommender()
+sorted_fragrances = sorted(list(recommender.valid_names_brands))
+sorted_accords = sorted(ACCORD_COLS)
 
 
 @router.get("/")
@@ -16,11 +18,11 @@ async def root():
 
 @router.get("/fragrances")
 async def list_fragrances():
-    return {"fragrances": sorted(list(recommender.valid_names_brands))}
+    return {"fragrances": sorted_fragrances}
 
 @router.get("/accords")
 async def list_fragrances_accord():
-    return {"accords": sorted(ACCORD_COLS)}
+    return {"accords": sorted_accords}
 
 
 @router.post("/recommend-by-fragrances", response_model=List[RecommendationResponse])
