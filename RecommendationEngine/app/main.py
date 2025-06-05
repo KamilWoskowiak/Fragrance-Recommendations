@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.controller import router
+from mangum import Mangum
 
 app = FastAPI(title="Fragrance Recommendation API")
 
@@ -14,6 +15,4 @@ app.add_middleware(
 
 app.include_router(router)
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="localhost", port=8000)
+handler = Mangum(app)
