@@ -8,8 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Fragrance Recommender",
-  description: "Discover your perfect fragrance with AI-powered recommendations",
-    generator: 'v0.dev'
+  description: "Fragrance Recommender Frontend using NextJS By Kamil Woskowiak",
 }
 
 export default function RootLayout({
