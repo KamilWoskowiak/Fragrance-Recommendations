@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -36,12 +35,12 @@ export function FragranceSearch({ fragrances, selectedFragrances, setSelectedFra
   return (
     <Card className="border-slate-200/60 dark:border-slate-700/60 bg-white/90 dark:bg-slate-700/90 backdrop-blur-sm">
       <CardHeader className="pb-4">
-        <CardTitle className="text-lg flex items-center text-blue-900 dark:text-blue-100">
-          <Search className="mr-2 h-5 w-5 text-blue-700" />
+        <CardTitle className="text-base sm:text-lg flex items-center text-blue-900 dark:text-blue-100">
+          <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-blue-700 flex-shrink-0" />
           Select Your Favorite Fragrances
         </CardTitle>
-        <CardDescription className="text-slate-600 dark:text-slate-300">
-          Choose up 10 fragrances you enjoy.
+        <CardDescription className="text-sm text-slate-600 dark:text-slate-300">
+          Choose up to 10 fragrances you love. We'll find similar ones for you.
         </CardDescription>
       </CardHeader>
 
@@ -53,7 +52,7 @@ export function FragranceSearch({ fragrances, selectedFragrances, setSelectedFra
             placeholder="Search fragrances by name or brand..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 text-sm"
           />
         </div>
 
@@ -67,9 +66,9 @@ export function FragranceSearch({ fragrances, selectedFragrances, setSelectedFra
                 <Badge
                   key={fragrance}
                   variant="secondary"
-                  className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-900/50"
+                  className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-xs sm:text-sm"
                 >
-                  {fragrance}
+                  <span className="truncate max-w-[120px] sm:max-w-none">{fragrance}</span>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -84,13 +83,13 @@ export function FragranceSearch({ fragrances, selectedFragrances, setSelectedFra
           </div>
         )}
 
-        <ScrollArea className="h-64 border rounded-lg">
+        <ScrollArea className="h-48 sm:h-64 border rounded-lg">
           <div className="p-2 space-y-1">
             {filteredFragrances.length > 0 ? (
               filteredFragrances.map(([brand, name]) => (
                 <div
                   key={`${brand}-${name}`}
-                  className="flex items-center justify-between p-2 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600/50 transition-colors"
+                  className="flex items-center justify-between p-2 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600/50 transition-colors gap-2"
                 >
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-sm text-blue-900 dark:text-blue-100 truncate">{name}</p>
@@ -101,14 +100,14 @@ export function FragranceSearch({ fragrances, selectedFragrances, setSelectedFra
                     disabled={selectedFragrances.length >= 10 || selectedFragrances.includes(name)}
                     size="sm"
                     variant="outline"
-                    className="ml-2 h-8 w-8 p-0"
+                    className="h-8 w-8 p-0 flex-shrink-0"
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
               ))
             ) : (
-              <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+              <div className="text-center py-8 text-slate-500 dark:text-slate-400 text-sm">
                 {searchTerm ? "No fragrances found matching your search" : "Start typing to search fragrances"}
               </div>
             )}
