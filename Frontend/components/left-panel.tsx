@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import axios from "axios"
+import { api } from "@/lib/api"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { RecommendationTypeSelector } from "./recommendation-type-selector"
 import { FragranceSearch } from "./fragrance-search"
@@ -44,10 +44,10 @@ export function LeftPanel({ setResults, isLoading, setIsLoading }: LeftPanelProp
         setError(null)
 
         const [fragrancesResponse, accordsResponse] = await Promise.all([
-          axios.get("http://localhost:8000/fragrances", {
+          api.get("/fragrances", {
             timeout: 5000,
           }),
-          axios.get("http://localhost:8000/accords", {
+          api.get("/fragrances", {
             timeout: 5000,
           }),
         ])
@@ -107,7 +107,7 @@ export function LeftPanel({ setResults, isLoading, setIsLoading }: LeftPanelProp
         setAccords(fallbackAccords)
 
         setError(
-          "Unable to connect to the recommendation service. Using demo data. To get personalized recommendations, please ensure the backend is running on localhost:8000.",
+          "Unable to connect to the recommendation service. Using demo data. To get personalized recommendations, please ensure the backend is running.",
         )
       } finally {
         setDataLoading(false)
@@ -143,8 +143,7 @@ export function LeftPanel({ setResults, isLoading, setIsLoading }: LeftPanelProp
       }
 
       if (recommendationType === "fragrances") {
-        response = await axios.post(
-          "http://localhost:8000/recommend-by-fragrances",
+        response = await api.post("/recommend-by-fragrances",
           {
             liked_fragrances: selectedFragrances,
             time_pref: time,
@@ -155,8 +154,7 @@ export function LeftPanel({ setResults, isLoading, setIsLoading }: LeftPanelProp
           requestConfig,
         )
       } else {
-        response = await axios.post(
-          "http://localhost:8000/recommend-by-accords",
+        response = await api.post("/recommend-by-accords",
           {
             accord_preferences: selectedAccords,
             time_pref: time,
