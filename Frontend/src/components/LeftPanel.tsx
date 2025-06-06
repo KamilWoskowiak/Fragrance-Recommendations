@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import axios from "axios"
+import { api } from "@/lib/api"
 import { RecommendationTypeSelector } from "./RecommendationTypeSelector"
 import { FragranceSearch } from "./FragranceSearch"
 import { AccordSelector } from "./AccordSelector"
@@ -33,8 +33,8 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({ setResults }) => {
     const fetchData = async () => {
       try {
         const [fragrancesResponse, accordsResponse] = await Promise.all([
-          axios.get("http://localhost:8000/fragrances"),
-          axios.get("http://localhost:8000/accords"),
+          api.get("/fragrances"),
+          api.get("/accords"),
         ])
         setFragrances(fragrancesResponse.data.fragrances)
         setAccords(accordsResponse.data.accords)
@@ -66,7 +66,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({ setResults }) => {
     try {
       let response
       if (recommendationType === "fragrances") {
-        response = await axios.post("http://localhost:8000/recommend-by-fragrances", {
+        response = await api.post("/recommend-by-fragrances", {
           liked_fragrances: selectedFragrances,
           time_pref: time,
           season_pref: weather,
@@ -74,7 +74,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({ setResults }) => {
           top_k: numberOfRecommendations,
         })
       } else {
-        response = await axios.post("http://localhost:8000/recommend-by-accords", {
+        response = await api.post("/recommend-by-accords", {
           accord_preferences: selectedAccords,
           time_pref: time,
           season_pref: weather,
