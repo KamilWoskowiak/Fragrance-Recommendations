@@ -4,14 +4,10 @@ on:
   push:
     branches: [main]
 
-concurrency:
-  group: backend-deployment
-  cancel-in-progress: true
-
 jobs:
   docker_cicd:
     name: Build & Deploy to Lambda
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
     # 1 – Check out code
