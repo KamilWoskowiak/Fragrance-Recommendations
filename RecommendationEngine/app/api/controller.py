@@ -48,6 +48,7 @@ async def recommend_fragrances(request: RecommendationRequest):
         return recommendations
 
     except Exception as e:
+        print(e)
         raise HTTPException(
             status_code=500,
             detail=f"An error occurred while processing your request: {str(e)}"

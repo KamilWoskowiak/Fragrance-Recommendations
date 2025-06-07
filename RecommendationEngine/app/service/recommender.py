@@ -119,7 +119,12 @@ class FragranceRecommender:
         )
 
         pool_size = max(30, top_k * 10)
-        candidates = temp.sort_values("final_score", ascending=False).head(pool_size)
+        candidates = (
+            temp
+            .sort_values("final_score", ascending=False)
+            .head(pool_size)
+            .reset_index(drop=True)
+        )
         lambda_ = 1 - diversity_factor
         diversified = (
             self.mmr_re_rank(candidates, NUMERIC_FEATURE_COLS, k=top_k, lambda_=lambda_)
