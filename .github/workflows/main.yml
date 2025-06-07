@@ -34,6 +34,10 @@ jobs:
 
   docker_cd:
     name: Build & Deploy to Lambda
+
+    needs: unit_tests
+    if: ${{ needs.unit_tests.result == 'success' }}
+    
     runs-on: ubuntu-latest
 
     steps:
