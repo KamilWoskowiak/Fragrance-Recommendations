@@ -12,7 +12,7 @@ The solution combines high‑throughput web scraping, rigorous feature‑enginee
 | Data Engineering     | • Multi‑threaded crawler (>5× speed‑up) pulling \~20 k perfumes from fragrantica.com.<br>• Accord and note taxonomy collapsed to 11 high‑level groups for better generalisation.<br>• TF‑IDF weighting surfaces under‑represented notes. |
 | Machine Learning     | • Vectorisation of every fragrance on *≈45* numeric features (accord strengths + gender/price/time/season scores).<br>• Cosine‑similarity + Bayesian‑smoothed ratings for relevance.<br>• **MMR** re‑ranking for controllable diversity. |
 | Software Engineering | • Typed FastAPI backend (Pydantic v2) packaged as a Docker image and shipped to AWS Lambda + API Gateway.<br>• GitHub Actions CI: PyTest → Docker build → push to Amazon ECR → `lambda update‑function‑code`.                            |
-| Frontend             | Lightweight Next.js / Tailwind dashboard (kept intentionally thin – focus is backend).                                                                                                                                                   |
+| Frontend             | Lightweight Next.js / Tailwind dashboard.                                                                                                                                                   |
 
 ---
 
