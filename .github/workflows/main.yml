@@ -13,7 +13,7 @@ jobs:
     # 1 – Check out code
     - uses: actions/checkout@v4
 
-    # 2 – Configure AWS credentials (using repository secrets)
+    # 2 – Configure AWS credentials
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -28,7 +28,7 @@ jobs:
 
     # 4 – Build the image and push it to ECR
     - name: Build & push image
-      working-directory: RecommendationEngine
+      working-directory: RecommendationEngine   # folder with your Dockerfile
       env:
         REGISTRY:   ${{ steps.login-ecr.outputs.registry }}
         REPOSITORY: ${{ secrets.AWS_REPOSITORY }}
@@ -42,14 +42,15 @@ jobs:
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
         docker push $REGISTRY/$REPOSITORY:latest
 
-    # 5 – Update the Lambda function to the new image
+    # 5 – Update the Lambda function
     - name: Update Lambda function
       env:
         REGISTRY:   ${{ steps.login-ecr.outputs.registry }}
         REPOSITORY: ${{ secrets.AWS_REPOSITORY }}
         IMAGE_TAG:  ${{ github.sha }}
+        LAMBDA_FN:  ${{ secrets.LAMBDA_FUNCTION_NAME }}
       run: |
         aws lambda update-function-code \
-          --function-name demoytcicdecrtest \
+          --function-name $LAMBDA_FN \
           --image-uri $REGISTRY/$REPOSITORY:$IMAGE_TAG \
           --region us-east-1
