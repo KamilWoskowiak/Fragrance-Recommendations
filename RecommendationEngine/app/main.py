@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.controller import router
 from mangum import Mangum
 
+
 app = FastAPI(title="Fragrance Recommendation API")
 
 origins = [
