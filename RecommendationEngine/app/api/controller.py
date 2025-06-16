@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 
 from app.config import ACCORD_COLS
 from app.model.schemas import RecommendationRequest, RecommendationResponse, AccordBasedRecommendationRequest
 from app.service.recommender import FragranceRecommender
+from fastapi_limiter.depends import RateLimiter
 
 router = APIRouter()
 recommender = FragranceRecommender()
@@ -11,21 +12,21 @@ sorted_fragrances = sorted(list(recommender.valid_names_brands))
 sorted_accords = sorted(ACCORD_COLS)
 
 
-@router.get("/")
+@router.get("/", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
 async def root():
     return {"message": "Fragrance Recommendation API"}
 
 
-@router.get("/fragrances")
+@router.get("/fragrances", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
 async def list_fragrances():
     return {"fragrances": sorted_fragrances}
 
-@router.get("/accords")
+@router.get("/accords", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
 async def list_fragrances_accord():
     return {"accords": sorted_accords}
 
 
-@router.post("/recommend-by-fragrances", response_model=List[RecommendationResponse])
+@router.post("/recommend-by-fragrances", response_model=List[RecommendationResponse], dependencies=[Depends(RateLimiter(times=10, seconds=60))])
 async def recommend_fragrances(request: RecommendationRequest):
     try:
         invalid_names = [name for name in request.liked_fragrances
@@ -54,7 +55,7 @@ async def recommend_fragrances(request: RecommendationRequest):
             detail=f"An error occurred while processing your request: {str(e)}"
         )
 
-@router.post("/recommend-by-accords", response_model=List[RecommendationResponse])
+@router.post("/recommend-by-accords", response_model=List[RecommendationResponse], dependencies=[Depends(RateLimiter(times=10, seconds=60))])
 async def recommend_fragrances_by_accords(request: AccordBasedRecommendationRequest):
     try:
         invalid_accords = set(request.accord_preferences.keys()) - set(ACCORD_COLS)
