@@ -5,7 +5,8 @@ from app.service.recommender import FragranceRecommender
 
 @pytest.fixture(scope="module")
 def client():
-    return TestClient(app)
+    with TestClient(app) as c:
+        yield c
 
 @pytest.fixture(scope="module")
 def recommender():

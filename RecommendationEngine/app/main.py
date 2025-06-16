@@ -9,7 +9,7 @@ import os
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    redis_url = os.getenv("REDIS_URL")
+    redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
     if not redis_url:
         raise RuntimeError("REDIS_URL is not set")
     redis_client = await redis.from_url(
@@ -23,7 +23,6 @@ async def lifespan(app: FastAPI):
         yield
     finally:
         await FastAPILimiter.close()
-
         await redis_client.aclose()
         print("Redis connection CLOSED")
 
