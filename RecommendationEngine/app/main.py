@@ -23,6 +23,7 @@ async def lifespan(app: FastAPI):
         yield
     finally:
         await FastAPILimiter.close()
+
         await redis_client.aclose()
         print("Redis connection CLOSED")
 
